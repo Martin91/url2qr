@@ -21,7 +21,8 @@
     xhr.open("GET", "https://api.weibo.com/2/short_url/shorten.json?source=482366427&url_long=" + original_url, true);
     xhr.onreadystatechange = function() {
       if (xhr.readyState == 4) {
-        document.querySelector(selector).innerHTML = "";
+        var canvasContainer = document.querySelector(selector);
+        canvasContainer.innerHTML = "";
 
         var resp = JSON.parse(xhr.responseText);
 
@@ -29,6 +30,11 @@
           var short_url = resp.urls[0].url_short;
 
           setQRCode(selector, short_url);
+
+          var shortUrlInput = document.createElement("input");
+          shortUrlInput.value = short_url;
+          shortUrlInput.className = "short-url-input";
+          canvasContainer.insertBefore(shortUrlInput, canvasContainer.firstChild);
         } else {
           setQRCode(selector, original_url);
         }
